@@ -13,7 +13,8 @@
 				"vscjava.vscode-java-dependency",
 				"mhutchie.git-graph",
 				"donjayamanne.githistory",
-				"github.vscode-pull-request-github"
+				"github.vscode-pull-request-github",
+				"redhat.vscode-yaml"
 			]
     	}
     }
