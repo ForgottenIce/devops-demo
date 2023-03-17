@@ -21,4 +21,4 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Check dev container
-        run: .github/scripts/check_devcontainer.sh
+        run: .github/scripts/check_dev_container.sh
