@@ -2,7 +2,7 @@
 
 # Change to .decontainer folder and calculate Dockerfile hash
 cd "${GITHUB_WORKSPACE}"/.devcontainer || exit 1
-IMG_NAME="ghcr.io/dafessor/devops-demo-img:latest"
+IMG_NAME="ghcr.io/dafessor/devops-demo/devops-demo-img:latest"
 DOCKER_HASH=$(sha1sum Dockerfile 2>&1 || true)
 # Get info on any existing image and try to match hashes
 IMAGE_UP2DATE=$( (docker inspect ${IMG_NAME} 2>&1 || true) | (grep -c "${DOCKER_HASH}" || true) )
