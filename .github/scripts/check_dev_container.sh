@@ -17,7 +17,7 @@ if [ "${IMAGE_UP2DATE}" != "1" ]; then
     echo "Pushing new image ...."
     docker push "${IMG_NAME}"
 else
-    echo "Image up to date, nothing to do ....
+    echo "Image up to date, nothing to do ...."
 fi
 
 exit 0
