@@ -16,6 +16,8 @@ if [ "${IMAGE_UP2DATE}" != "1" ]; then
     docker build -t "${IMG_NAME}" --label org.opencontainers.image.description="${DOCKER_HASH}" .
     echo "Pushing new image ...."
     docker push "${IMG_NAME}"
+else
+    echo "Image up to date, nothing to do ....
 fi
 
 exit 0
