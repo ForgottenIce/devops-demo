@@ -40,7 +40,7 @@ jobs:
       - name: Pull dev container
         run: docker pull ghcr.io/dafessor/devops-demo/devops-demo-img:latest
       - name: Run tests inside container
-        run: docker run -it --rm --mount type=bind,src=${{ github.workspace }},dst=/workspace devops-demo-img:latest mvn test
+        run: docker run --rm --mount type=bind,src=${{ github.workspace }},dst=/workspace devops-demo-img:latest mvn test
 
     
 
