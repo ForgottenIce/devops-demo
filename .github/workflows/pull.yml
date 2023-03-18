@@ -44,6 +44,6 @@ jobs:
       - name: Archive code coverage results
         uses: actions/upload-artifact@v3
         with:
-          name: code-coverage-report
+          name: test-coverage-report
           path: target/site/jacoco/
           retention-days: 21
