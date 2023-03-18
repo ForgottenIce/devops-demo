@@ -47,3 +47,6 @@ jobs:
           name: test-coverage-report
           path: target/site/jacoco/
           retention-days: 21
+
+  update_coverage_report:
+    uses: .github/workflows/test-coverage-report.yml
