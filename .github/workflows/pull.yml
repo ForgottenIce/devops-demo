@@ -49,6 +49,7 @@ jobs:
           retention-days: 21
 
   update_coverage_report:
+    needs: run_tests
     permissions:
       contents: read
       pages: write
