@@ -41,6 +41,9 @@ jobs:
         run: docker pull ghcr.io/dafessor/devops-demo/devops-demo-img:latest
       - name: Run tests inside container
         run: docker run --rm --mount type=bind,src=${{ github.workspace }},dst=/workspace ghcr.io/dafessor/devops-demo/devops-demo-img:latest sh -c "cd /workspace;mvn test"
-
-    
-
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-coverage-report
+          path: target/site/jacoco/
+          retention-days: 21
