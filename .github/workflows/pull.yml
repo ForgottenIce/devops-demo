@@ -49,4 +49,4 @@ jobs:
           retention-days: 21
 
   update_coverage_report:
-    uses: .github/workflows/test-coverage-report.yml
+    uses: ./.github/workflows/test-coverage-report.yml
