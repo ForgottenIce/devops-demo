@@ -49,4 +49,8 @@ jobs:
           retention-days: 21
 
   update_coverage_report:
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     uses: ./.github/workflows/test-coverage-report.yml
