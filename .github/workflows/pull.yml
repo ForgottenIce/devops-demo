@@ -37,16 +37,10 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      #- name: Login to GitHub Container Registry
-      #  uses: docker/login-action@v2
-      #  with:
-      #    registry: ghcr.io
-      #    username: ${{ github.actor }}
-      #    password: ${{ secrets.GITHUB_TOKEN }}
       - name: Pull dev container
         run: docker pull ghcr.io/dafessor/devops-demo/devops-demo-img:latest
       - name: Run tests inside container
-        run: docker run --rm --mount type=bind,src=${{ github.workspace }},dst=/workspace ghcr.io/dafessor/devops-demo/devops-demo-img:latest sh "pwd;ls -al"
+        run: docker run --rm --mount type=bind,src=${{ github.workspace }},dst=/workspace ghcr.io/dafessor/devops-demo/devops-demo-img:latest sh -c "cd /workspace;mvn test"
 
     
 
