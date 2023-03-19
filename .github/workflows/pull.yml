@@ -6,7 +6,7 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: ghcr.io/dafessor/devops-demo-img
+  IMAGE_NAME: ghcr.io/${{ github.repository }}/devops-demo-img:latest
 
 jobs:
 
@@ -26,7 +26,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Check dev container
-        run: .github/scripts/check_dev_container.sh ${{ secrets.GITHUB_TOKEN }}
+        run: .github/scripts/check_dev_container.sh ${{ github.repository}} ${IMAGE_NAME} ${{ secrets.GITHUB_TOKEN }}
 
   run_tests:
     runs-on: ubuntu-latest
@@ -38,9 +38,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
       - name: Pull dev container
-        run: docker pull ghcr.io/dafessor/devops-demo/devops-demo-img:latest
+        run: docker pull ${IMAGE_NAME}:latest
       - name: Run tests inside container
-        run: docker run --rm --mount type=bind,src=${{ github.workspace }},dst=/workspace ghcr.io/dafessor/devops-demo/devops-demo-img:latest sh -c "cd /workspace;mvn test"
+        run: docker run --rm --mount type=bind,src=${{ github.workspace }},dst=/workspace ${IMAGE_NAME}:latest sh -c "cd /workspace;mvn test"
       - name: Archive code coverage results
         uses: actions/upload-artifact@v3
         with:

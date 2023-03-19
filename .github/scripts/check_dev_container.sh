@@ -1,14 +1,17 @@
 #!/bin/sh -l
 
-if [ ! $# -eq 1 ]; then
+if [ ! $# -eq 3 ]; then
+    echo "This script was not called with the right nunber of arguments"
     exit 1
 fi
 
-GITHUB_TOKEN=$1
+REPO_NAME=$1
+IMAGE_NAME=$2
+GITHUB_TOKEN=$3
 
 # Constants
-IMG_NAME="ghcr.io/dafessor/devops-demo/devops-demo-img:latest"
-IMG_NAME_URL_ENC="devops-demo%2Fdevops-demo-img"
+IMG_NAME="${IMAGE_NAME}:latest"
+IMG_NAME_URL_ENC=$(echo "${REPO_NAME}" || sed s/\\//%2F/)
 
 # Change to .decontainer folder and calculate Dockerfile hash
 cd "${GITHUB_WORKSPACE}"/.devcontainer || exit 1
