@@ -4,6 +4,8 @@ run-name: ${{ github.actor }} initiated a pull request
 on:
   workflow_dispatch:
   pull_request:
+    branches:
+      - main
 
 jobs:
 
