@@ -1,9 +1,11 @@
-name: 'Run all tests on pull requests'
-run-name: ${{ github.actor }} initiated a pull request
+name: 'Run all tests on and update coverage on push'
+run-name: ${{ github.actor }} initiated a push request
 
 on:
   workflow_dispatch:
-  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
 
