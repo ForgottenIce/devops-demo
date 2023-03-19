@@ -13,7 +13,7 @@ jobs:
       contents: read
       packages: write
     outputs:
-      image_name: ${{ steps.lower_case_names.outputs.image_name_lowercased }}
+      image_name: ${{ steps.lower_case_names.outputs.image_name_lowercase }}
 
     steps:
       - name: Downcase image and repo names
