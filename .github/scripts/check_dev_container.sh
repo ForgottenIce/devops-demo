@@ -10,8 +10,8 @@ IMAGE_NAME=$2
 GITHUB_TOKEN=$3
 
 # Constants
-IMG_NAME="${IMAGE_NAME}:latest"
-IMG_NAME_URL_ENC=$(echo "${REPO_NAME}" || sed s/\\//%2F/)
+IMG_NAME="$(echo "${IMAGE_NAME}" | tr '[:upper:]' '[:lower:]')"
+IMG_NAME_URL_ENC=$(echo "${REPO_NAME}" | tr '[:upper:]' '[:lower:]' | sed s/\\//%2F/)
 
 # Change to .decontainer folder and calculate Dockerfile hash
 cd "${GITHUB_WORKSPACE}"/.devcontainer || exit 1
