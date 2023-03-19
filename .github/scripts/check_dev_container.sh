@@ -6,11 +6,11 @@ if [ ! $# -eq 3 ]; then
 fi
 
 REPO_NAME=$1
-IMG_NAME=$2
+IMAGE_NAME=$2
 GITHUB_TOKEN=$3
 
 # Constants
-REPO_NAME_URL_ENC=$(echo "${REPO_NAME}" | tr '[:upper:]' '[:lower:]' | sed s/\\//%2F/)
+REPO_NAME_URL_ENC=$(echo "${REPO_NAME}" | sed s/\\//%2F/)
 
 # Change to .decontainer folder and calculate Dockerfile hash
 cd "${GITHUB_WORKSPACE}"/.devcontainer || exit 1
@@ -25,11 +25,11 @@ IMG_UP2DATE=$(curl -s -L -H "Accept: application/vnd.github+json" \
 # If hashes don't (or don exist), build and push image
 if [ "${IMG_UP2DATE}" -lt  1 ]; then
     echo "Rebuilding image, deleting any old stuff ...."
-    docker image rm "${IMG_NAME}" || true
+    docker image rm "${IMAGE_NAME}" || true
     echo "Doing the actual build ...."
-    docker build -t "${IMG_NAME}" --label org.opencontainers.image.description="${DOCKER_HASH}" .
+    docker build -t "${IMAGE_NAME}" --label org.opencontainers.image.description="${DOCKER_HASH}" .
     echo "Pushing new image ...."
-    docker push "${IMG_NAME}"
+    docker push "${IMAGE_NAME}"
 else
     echo "Image up to date, nothing to do ...."
 fi
