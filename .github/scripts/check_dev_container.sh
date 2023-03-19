@@ -15,7 +15,7 @@ REPO_NAME_URL_ENC=$(echo "${REPO_NAME}" | sed s/\\//%2F/)
 
 # Change to .decontainer folder and calculate Dockerfile hash
 cd "${GITHUB_WORKSPACE}"/.devcontainer || exit 1
-cd=$(sha1sum Dockerfile 2>&1 || true)
+DOCKER_HASH=$(sha1sum Dockerfile 2>&1 || true)
 echo "Docker hash: ${DOCKER_HASH}"
 
 # Get info on any existing image and try to match hashes
