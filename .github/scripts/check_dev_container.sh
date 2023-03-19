@@ -2,16 +2,19 @@
 
 if [ ! $# -eq 3 ]; then
     echo "Called with the a wrong number of arguments, expected 3 got $#"
-    echo $@
+    echo "$@"
     exit 1
 fi
 
 REPO_NAME=$1
-IMAGE_NAME=$2
+IMAGE_PATH=$2
 GITHUB_TOKEN=$3
 
 # Constants
-REPO_NAME_URL_ENC=$(echo "${REPO_NAME}" | sed s/\\//%2F/)
+REPO_NAME_URL_ENC=$(echo "${REPO_NAME}" | cut -f2 -d/)
+IMAGE_NAME=$(echo "${IMAGE_PATH}" | cut -f4 -d/ | cut -f1 -d:)
+REPO_NAME_URL_ENC="${REPO_NAME_URL_ENC}%2F${IMAGE_NAME}"
+IMAGE_PATH_NO_TAG=$(echo "${IMAGE_PATH}" | cut -f1 -d:)
 
 # Change to .decontainer folder and calculate Dockerfile hash
 cd "${GITHUB_WORKSPACE}"/.devcontainer || exit 1
@@ -29,11 +32,11 @@ echo "Number of hash matches: ${IMG_UP2DATE}"
 # If hashes don't (or don exist), build and push image
 if [ "${IMG_UP2DATE}" -lt  1 ]; then
     echo "Rebuilding image, deleting any old stuff ...."
-    docker image rm "${IMAGE_NAME}" || true
+    docker image rm "${IMAGE_PATH_NO_TAG}" || true
     echo "Doing the actual build ...."
-    docker build -t "${IMAGE_NAME}" --label org.opencontainers.image.description="${DOCKER_HASH}" .
+    docker build -t "${IMAGE_PATH}" --label org.opencontainers.image.description="${DOCKER_HASH}" .
     echo "Pushing new image ...."
-    docker push "${IMAGE_NAME}"
+    docker push "${IMAGE_PATH}"
 else
     echo "Image up to date, nothing to do ...."
 fi
