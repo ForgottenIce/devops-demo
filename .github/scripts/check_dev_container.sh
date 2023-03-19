@@ -1,7 +1,8 @@
 #!/bin/sh -l
 
 if [ ! $# -eq 3 ]; then
-    echo "This script was not called with the right nunber of arguments"
+    echo "Called with the a wrong number of arguments, expected 3 got $#"
+    echo $@
     exit 1
 fi
 
