@@ -15,13 +15,16 @@ REPO_NAME_URL_ENC=$(echo "${REPO_NAME}" | sed s/\\//%2F/)
 
 # Change to .decontainer folder and calculate Dockerfile hash
 cd "${GITHUB_WORKSPACE}"/.devcontainer || exit 1
-DOCKER_HASH=$(sha1sum Dockerfile 2>&1 || true)
+cd=$(sha1sum Dockerfile 2>&1 || true)
+echo "Docker hash: ${DOCKER_HASH}"
 
 # Get info on any existing image and try to match hashes
+echo "Rest API url: https://api.github.com/user/packages/container/${REPO_NAME_URL_ENC}/versions" 
 IMG_UP2DATE=$(curl -s -L -H "Accept: application/vnd.github+json" \
                    -H "Authorization: Bearer ${GITHUB_TOKEN}" \
                    -H "X-GitHub-Api-Version: 2022-11-28" \
                    "https://api.github.com/user/packages/container/${REPO_NAME_URL_ENC}/versions" | grep -c "${DOCKER_HASH}")
+echo "Number of hash matches: ${IMG_UP2DATE}"
 
 # If hashes don't (or don exist), build and push image
 if [ "${IMG_UP2DATE}" -lt  1 ]; then
