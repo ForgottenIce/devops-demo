@@ -1,0 +1,59 @@
+name: 'Run all tests on pull requests'
+run-name: ${{ github.actor }} initiated a pull request
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  chk_devcontainer:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image_name: ${{ steps.lower_case_names.outputs.image_name_lowercase }}
+
+    steps:
+      - name: Downcase image and repo names
+        id: lower_case_names
+        run: |
+          echo "image_name_lowercase=ghcr.io/${GITHUB_REPOSITORY,,}/devops-demo-img:latest" >>${GITHUB_OUTPUT}
+          echo "repo_name_lowercase=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          ref: main
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check dev container
+        run: .github/scripts/check_dev_container.sh ${{env.repo_name_lowercase}} ${{steps.lower_case_names.outputs.image_name_lowercase}} ${{secrets.GITHUB_TOKEN}}
+
+  run_tests:
+    runs-on: ubuntu-latest
+    needs: chk_devcontainer
+    permissions:
+      contents: write
+    env:
+      IMAGE_NAME: ${{ needs.chk_devcontainer.outputs.image_name }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Pull dev container
+        run: docker pull ${IMAGE_NAME}
+      - name: Run tests inside container
+        run: docker run --rm --mount type=bind,src=${{ github.workspace }},dst=/workspace ${IMAGE_NAME} sh -c "cd /workspace;mvn test"
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-coverage-report
+          path: target/site/jacoco/
+          retention-days: 21
