@@ -30,9 +30,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Check dev container
-        run: |
-          echo  "${{env.repo_name_lower_case}} ${{steps.lower_case_names.outputs.image_name_lowercase}}"
-          .github/scripts/check_dev_container.sh ${{env.repo_name_lower_case}} ${{steps.lower_case_names.outputs.image_name_lowercase}} ${{secrets.GITHUB_TOKEN}}
+        run: .github/scripts/check_dev_container.sh ${{env.repo_name_lower_case}} ${{steps.lower_case_names.outputs.image_name_lowercase}} ${{secrets.GITHUB_TOKEN}}
 
   run_tests:
     runs-on: ubuntu-latest
