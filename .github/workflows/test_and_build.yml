@@ -7,7 +7,8 @@ on:
   workflow_dispatch:
   #Trigger the workflow on push from the master/main branch 
   push:
-    branches: [ master ]
+    branches:
+      - main
 jobs:
   #Test's job
   tests:
@@ -84,5 +85,5 @@ jobs:
           logout: true
       - name: 'Build the Docker Image'
         run: |
-          docker build . --tag ghcr.io/${{github.actor}}/devopsdemo:latest
+          docker build . --tag ghcr.io/${{github.actor}}/devops-demo:latest
           docker push ghcr.io/${{github.actor}}/devops-demo:latest
