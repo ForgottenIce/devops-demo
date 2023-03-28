@@ -1,6 +1,3 @@
-env:
-  REGISTRY: ghcr.io
-
 name: CI/CD Pipeline
 on:
   #Manually trigger workflow runs
@@ -9,6 +6,10 @@ on:
   push:
     branches:
       - main
+
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   #Test's job
   tests:
@@ -72,6 +73,8 @@ jobs:
     needs: build
     name: Deploy Images to GHCR
     runs-on: ubuntu-latest
+    env:
+      USERNAME: ${{github.actor}}
     steps:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v3
@@ -85,5 +88,5 @@ jobs:
           logout: true
       - name: 'Build the Docker Image'
         run: |
-          docker build . --tag ghcr.io/${{github.actor}}/devops-demo:latest
-          docker push ghcr.io/${{github.actor}}/devops-demo:latest
+          docker build . --tag ghcr.io/${USERNAME,,}/devops-demo:latest
+          docker push ghcr.io/${USERNAME,,}/devops-demo:latest
