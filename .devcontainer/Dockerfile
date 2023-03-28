@@ -1,12 +1,11 @@
-FROM maven:3.8.5-eclipse-temurin-17-alpine AS build
-RUN mkdir -p /app
-WORKDIR /app
-COPY pom.xml /app
-COPY src /app/src
-RUN mvn -B package --file pom.xml -DskipTests
-# Fetch the Java sdk image
-FROM eclipse-temurin:17-jdk-alpine
-# Expose port 8080
+# Java version: 19
+FROM eclipse-temurin:19-jammy
+
+LABEL org.opencontainers.image.source=https://github.com/DaFessor/devops-demo
+
+# Install Maven
+RUN apt-get update && apt-get install maven git -y && mkdir /workspace
+
+# Port used by Spring app (only used locally, not on GitHub)
 EXPOSE 8080
-COPY --from=build /app/target/*jar devops-demo-1.0.jar
-ENTRYPOINT ["java","-jar","devops-demo-1.0.jar"]
+CMD ["bash"]
