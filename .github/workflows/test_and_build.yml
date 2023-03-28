@@ -54,3 +54,12 @@ jobs:
       - name: Build with Maven
         run: mvn -B package -DskipTests --file pom.xml
       - run: mkdir staging && cp target/*.jar staging
+      #Upload the jar artifact
+      - name: Upload JAR Artifact
+        #This uploads artifacts from your workflow
+        uses: actions/upload-artifact@v3
+        with:
+        #Set artifact name
+          name: RunnableJar
+          #From this path
+          path: staging
